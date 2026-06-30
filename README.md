@@ -109,18 +109,6 @@ Output interpretation:
 
 ---
 
-## Web Interface
-
-Start the Flask application:
-
-```bash
-python app.py
-```
-
-Open the URL displayed in the terminal to upload and classify an image.
-
----
-
 ## Approach
 
 The implementation uses handcrafted image features including:
