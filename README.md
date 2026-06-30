@@ -36,9 +36,8 @@ After downloading the dataset, place it in the following directory structure:
 
 ```
 dataset/
-└── train/
-    ├── real/
-    └── screen/
+├── screen/
+└── real/
 ```
 
 The dataset contains real photographs and photographs of screens collected under different lighting conditions, viewing angles, distances, and devices to improve the model's ability to generalize.
