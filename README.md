@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project classifies an input image as either a **Real Photo** or a **Photo of a Screen**. The solution is implemented using classical computer vision techniques and a Support Vector Machine (SVM) classifier. Image features are extracted from each input image and used to predict the probability that the image is a recaptured screen photo.
+This project detects whether an input image is a **Real Photo** or a **Photo of a Screen (Recaptured Image)**. The solution uses classical computer vision techniques and a Support Vector Machine (SVM) classifier. A set of handcrafted image features is extracted from each input image, and the trained model predicts the probability of the image being a screen recapture.
 
 ---
 
@@ -11,15 +11,6 @@ This project classifies an input image as either a **Real Photo** or a **Photo o
 ```
 ML_Latest_Assignment/
 │
-├── dataset/
-│   └── train/
-│       ├── real/
-│       └── screen/
-│
-├── templates/
-│   └── index.html
-│
-├── app.py
 ├── train.py
 ├── validate.py
 ├── predict.py
@@ -33,14 +24,24 @@ ML_Latest_Assignment/
 
 ## Dataset
 
-A custom dataset was prepared for this assignment.
+The training dataset is provided separately due to GitHub file size limitations.
 
-The dataset contains:
+### Dataset Download
 
-- 481 real photographs
-- 110 photographs of screens
+Google Drive:
 
-The images include different lighting conditions, viewing angles, distances, and devices to improve the model's ability to generalize.
+https://drive.google.com/drive/folders/1tl5ZSPrpySvGB5MoQXB8cDPMO988rCKq?usp=sharing
+
+After downloading the dataset, place it in the following directory structure:
+
+```
+dataset/
+└── train/
+    ├── real/
+    └── screen/
+```
+
+The dataset contains real photographs and photographs of screens collected under different lighting conditions, viewing angles, distances, and devices to improve the model's ability to generalize.
 
 ---
 
@@ -49,14 +50,14 @@ The images include different lighting conditions, viewing angles, distances, and
 Install the required Python packages:
 
 ```bash
-pip install numpy opencv-python pillow scikit-learn flask joblib scipy
+pip install numpy scipy pillow scikit-learn opencv-python joblib
 ```
 
 ---
 
 ## Training
 
-Train the classifier using:
+Train the model using:
 
 ```bash
 python train.py
@@ -65,7 +66,8 @@ python train.py
 Example output:
 
 ```
-Validation Accuracy: 98.32%
+Preparing training dataset...
+Training SVM classifier...
 Model trained successfully and saved to: model.pkl
 ```
 
@@ -79,18 +81,25 @@ Run:
 python validate.py
 ```
 
-Validation results:
+Example validation results:
 
-- Total Images Evaluated: **591**
-- Final Accuracy: **98.82%**
-- Average Latency: **620.14 ms per image**
-- Median Latency: **602.01 ms per image**
+```
+========================================
+VALIDATION RESULTS
+========================================
+Total Evaluated Images : 591
+Final Accuracy         : 98.82%
+Average Latency        : 620.14 ms per image
+Median Latency         : 602.01 ms per image
+Latency Std Dev        : 683.18 ms
+========================================
+```
 
 ---
 
 ## Prediction
 
-Predict a single image:
+Predict a single image using:
 
 ```bash
 python predict.py image.jpg
@@ -102,20 +111,28 @@ Example output:
 0.94
 ```
 
-Output interpretation:
+### Output Interpretation
 
-- Score close to **0** → Real Photo
-- Score close to **1** → Screen Photo
+- **Score close to 0** → Real Photo
+- **Score close to 1** → Photo of a Screen
 
 ---
 
-## Approach
+## Methodology
 
-The implementation uses handcrafted image features including:
+The implementation extracts a 33-dimensional feature vector from each image using:
 
 - RGB color statistics
 - HSV color statistics
-- Laplacian sharpness
-- Frequency-domain features using FFT
+- Laplacian-based sharpness features
+- Fast Fourier Transform (FFT) frequency features
 
-These features are normalized and passed to an SVM classifier with an RBF kernel to generate a probability score.
+The extracted features are normalized and passed to a Support Vector Machine (SVM) with an RBF kernel to generate a probability score between **0** and **1**.
+
+---
+
+## Notes
+
+- The pretrained model (`model.pkl`) is included in this repository.
+- The dataset is provided through the Google Drive link above due to GitHub storage limitations.
+- The project has been tested on Windows using Python 3.11.
